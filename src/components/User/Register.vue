@@ -40,7 +40,7 @@ export default {
   watch: {
     user(value){
       if(value !== null && value !== undefined){
-        this.$rounter.push('/')
+        this.$router.push('/')
       }
     }
   },
@@ -51,5 +51,6 @@ export default {
       this.$store.dispatch('signUserup',{email: this.email,password: this.password})
     }
   },
+  
 }
 </script>
