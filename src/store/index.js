@@ -7,24 +7,60 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state: {
         user: null,
-        loadArticles:[
-            { image: 'https://c.pxhere.com/photos/4c/88/photo-282321.jpg!d', id: 'asdada', title: 'Tesla Takoyaki'},
-            { image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Banana-Single.jpg/680px-Banana-Single.jpg', id: 'fdgffasdfas', title: 'Electric Banana'},
-        ]
+        loadArticles:[],
+        loading: false,
+        error: null,
 
     },
 
     mutations: {
+        setloadArticles (state, payload){
+            state.loadArticles = payload;
+        },
         setUser (state, payload){
             state.user = payload;
+        },
+        setLoading (state, payload){
+            state.loading = payload;
+        },
+        setError (state, payload){
+            state.error = payload;
+        },
+        clearError (state){
+            state.error = null;
         }
     },
 
     actions: {
+        loadArticles ({commit}) {
+            commit('setLoading', true)
+            firebase.database().ref('articles').once('value')
+            .then((data) => {
+                const articles = []
+                const obj = data.val()
+                for(let key in obj){
+                    articles.push({
+                        id: key,
+                        title: obj[key].title,
+                        image: obj[key].image
+                    })
+                }
+                commit('setLoading', false)
+                commit('setloadArticles',articles)
+            })
+            .catch(
+                error => {
+                    commit('setLoading', false)
+                }
+            )
+        },
         signUserup ({commit},payload) {
+            commit('setLoading',true)
+            commit('clearError')
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
             .then(
                 user => {
+                    commit('setLoading',false)
                     const newUser = {
                         id: user.uid,
 
@@ -34,14 +70,18 @@ export const store = new Vuex.Store({
             )
             .catch(
                 error => {
-                    console.log(error)
+                    commit('setLoading',false)
+                    commit('setError',error)
                 }
             )
         },
         logUserin ({commit},payload){
+            commit('setLoading',true)
+            commit('clearError')
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
             .then(
                 user => {
+                    commit('setLoading',false)
                     const newUser = {
                         id: user.uid,
                     }
@@ -50,6 +90,8 @@ export const store = new Vuex.Store({
             )
             .catch(
                 error => {
+                    commit('setLoading',false)
+                    commit('setError',error)
                     console.log(error)
                 }
             )
@@ -73,6 +115,12 @@ export const store = new Vuex.Store({
                     return article.id === articleId
                 })
             }
+        },
+        loading(state) {
+            return state.loading
+        },
+        error(state) {
+            return state.error
         },
         
         

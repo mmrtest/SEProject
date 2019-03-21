@@ -72,7 +72,8 @@
       </v-btn>
       <v-toolbar-title>
         <router-link to='/' tag="span" style="cursor: pointer">
-        TiTle
+        <v-icon dark>pets</v-icon>
+        Projectpidia
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -95,11 +96,14 @@
             </v-card-title>
             <v-card-text>
               <v-form class="px-3" @submit.prevent="onRegister">
-                <v-text-field v-model="email" label="Email" prepend-icon="edit"></v-text-field>
-                <v-text-field v-model="password" type="password" label="Password" prepend-icon="security"></v-text-field>
-                <v-text-field v-model="conPassword" type="password" label="ConfirmPassword" prepend-icon="people" :rules="[comparePass]"></v-text-field>
+                <v-text-field v-model="email" label="Email" prepend-icon="edit" required></v-text-field>
+                <v-text-field v-model="password" type="password" label="Password" prepend-icon="security" required></v-text-field>
+                <v-text-field v-model="conPassword" type="password" label="ConfirmPassword" prepend-icon="people" :rules="[comparePass]" required></v-text-field>
                 <v-btn type="submit">Submit</v-btn>
               </v-form>
+              <v-card v-if="error">
+                <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+              </v-card>
             </v-card-text>
           </v-card>
         </v-dialog>
@@ -115,10 +119,13 @@
             </v-card-title>
             <v-card-text>
               <v-form class="px-3" @submit.prevent="onLogin">
-                <v-text-field v-model="loginEmail" label="Email" prepend-icon="edit"></v-text-field>
-                <v-text-field v-model="loginPassword" type="password" label="Password" prepend-icon="security"></v-text-field>
+                <v-text-field v-model="loginEmail" label="Email" prepend-icon="edit" required></v-text-field>
+                <v-text-field v-model="loginPassword" type="password" label="Password" prepend-icon="security" required></v-text-field>
                 <v-btn type="submit">Submit</v-btn>
               </v-form>
+              <v-card v-if="error">
+                <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+              </v-card>
             </v-card-text>
           </v-card>
         </v-dialog> 
@@ -136,8 +143,7 @@
       
     </v-toolbar>
     <main>
-      
-       <router-view></router-view>
+      <router-view></router-view>
     </main>
   </v-app>
 </template>
@@ -187,7 +193,11 @@ export default {
     },
     user () {
       return this.$store.getters.user
+    },
+    error () {
+      return this.$store.getters.error
     }
+
 
   },
   watch: {
@@ -208,6 +218,9 @@ export default {
       // userRef.push({email:this.email,password:this.password,name:this.name})
       this.$store.dispatch('logUserin',{email: this.loginEmail,password: this.loginPassword})
     },
+    onDismissed() {
+      this.$store.dispatch('clearError')
+    }
   },
 }
 </script>

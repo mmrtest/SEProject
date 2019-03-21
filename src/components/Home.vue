@@ -4,7 +4,15 @@
             <v-card dark class="card1">
             <!-- <div class="display-2 font-weight-light">abc</div> -->
             <v-flex>
+                
                 <v-carousel style="cursor: pointer;">
+                <v-progress-circular
+                    indeterminate
+                    color="white"
+                    v-if="loading"
+                    class="load1"
+                    size="50"
+                ></v-progress-circular>
                 <v-carousel-item
                     v-for="items in item"
                     :key="items.id"
@@ -14,6 +22,7 @@
                 <div class="display-1 font-weight-light">{{ items.title }}</div>
                 </v-carousel-item>
                 </v-carousel>
+                
             </v-flex>
             <v-flex xs12 class="text-xs-center mt-2">
                 
@@ -32,6 +41,9 @@ export default {
     computed: {
         item () {
             return this.$store.getters.loadArticles
+        },
+        loading(){
+            return this.$store.getters.loading
         }
     },
     methods: {
@@ -57,6 +69,13 @@ export default {
         width: 1200px;
         
         font-size: 2rem;
+        background-color: #039BE5;
+        
+    }
+    .load1 {
+        left: 580px;
+        top: 210px;
+        
         background-color: #039BE5;
         
     }
