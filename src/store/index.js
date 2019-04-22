@@ -28,10 +28,31 @@ export const store = new Vuex.Store({
         },
         clearError (state){
             state.error = null;
-        }
+        },
+        setcreateArticle (state, payload){
+            state.loadArticles.push(payload);
+        },
     },
 
     actions: {
+        createArticle ({commit},payload){
+            const article = {
+                title: payload.title,
+                image: payload.image,
+                description: payload.description,
+                teacher: payload.teacher,
+                tag: payload.tag
+            }
+            firebase.database().ref('articles').push(article)
+                .then((data) => {
+                    console.log(data)
+                    commit('setcreateArticle',article)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+            
+        },
         loadArticles ({commit}) {
             commit('setLoading', true)
             firebase.database().ref('articles').once('value')
@@ -42,7 +63,10 @@ export const store = new Vuex.Store({
                     articles.push({
                         id: key,
                         title: obj[key].title,
-                        image: obj[key].image
+                        image: obj[key].image,
+                        description: obj[key].description,
+                        teacher: obj[key].teacher,
+                        tag: obj[key].tag
                     })
                 }
                 commit('setLoading', false)
@@ -106,9 +130,18 @@ export const store = new Vuex.Store({
         loadArticles(state){
             return state.loadArticles
         },
+        loadArticlesLength(state){
+            return state.loadArticles.length
+        },
         getArticle (state,getters){
-            return getters.loadArticles.slice(0,5)
+            var temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % (state.loadArticles.length - 5)
+            return getters.loadArticles.slice(temp,temp+5)
         } ,
+        getrandArticle(state){
+            return (articleId) => {
+                return state.loadArticles[articleId]
+            }
+        },
         loadArticle(state){
             return (articleId) => {
                 return state.loadArticles.find((article) =>{

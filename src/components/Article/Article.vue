@@ -52,7 +52,10 @@
                         </div>
                         </div>
                         <v-spacer></v-spacer>
-                        <v-btn icon class="mr-0">
+                        <v-btn
+                        icon class="mr-0" 
+                        @click="onLoadArticle(item.id)"
+                        >
                         <v-icon dark>arrow_right_alt</v-icon>
                         </v-btn>
                     </v-card-title>
@@ -69,18 +72,35 @@
 export default {
   data () {
     return {
-      topic: [
-        {image: 'https://cdn.vuetifyjs.com/images/cards/cooking.png', title: 'Cafe Badilico', link: '/search', views: '206'},
-        {image: 'https://cdn.vuetifyjs.com/images/cards/cooking.png', title: 'Cafe Badilico2', link: '/signup', views: '286'},
-        {image: 'https://cdn.vuetifyjs.com/images/cards/cooking.png', title: 'Cafe Badilico3', link: '/signin', views: '26'}
-      ]
+      topic: []
     }
+  },
+  created (){
+        var temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % this.$store.getters.loadArticlesLength
+        this.topic[0] = this.$store.getters.getrandArticle(temp)
+        temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % this.$store.getters.loadArticlesLength
+        this.topic[1] = this.$store.getters.getrandArticle(temp)
+        temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % this.$store.getters.loadArticlesLength
+        this.topic[2] = this.$store.getters.getrandArticle(temp)
   },
   props: ['id'],
   computed: {
         item () {
             return this.$store.getters.loadArticle(this.id)
         }
+
     },
+  methods: {
+        onLoadArticle(id){
+            var temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % this.$store.getters.loadArticlesLength
+            this.topic[0] = this.$store.getters.getrandArticle(temp)
+            temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % this.$store.getters.loadArticlesLength
+            this.topic[1] = this.$store.getters.getrandArticle(temp)
+            temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % this.$store.getters.loadArticlesLength
+            this.topic[2] = this.$store.getters.getrandArticle(temp)                                
+            this.$router.push('/article/' + id)
+            
+        }
+  }
 }
 </script>

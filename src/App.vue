@@ -133,6 +133,9 @@
       </v-toolbar-items>
 
       <v-toolbar-items v-if="this.userAuth">
+        <v-btn flat small router to="/create">
+            <v-icon small dark>home</v-icon>
+            Create</v-btn>
         <v-btn flat small router to="/search">
             <v-icon small dark>search</v-icon>
             Search</v-btn>

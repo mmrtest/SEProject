@@ -40,7 +40,7 @@
 export default {
     computed: {
         item () {
-            return this.$store.getters.loadArticles
+            return this.$store.getters.getArticle
         },
         loading(){
             return this.$store.getters.loading
