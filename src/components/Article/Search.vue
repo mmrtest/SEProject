@@ -1,17 +1,16 @@
 <template>
     <v-container>
-        <v-layout>
-            <v-flex class="search-wrapper">
+        <v-layout row>
+            <v-flex class="search-wrapper" xs9>
                 <v-card class="px-3 pt-3" color="yellow darken-3">
                     <h1>Search</h1>
                 <v-text-field v-model="word" type="input" label="input your key" prepend-icon="search"></v-text-field>
-                <v-chip
-                v-for="(tag, index) in currentTag"
-                :key='index'
-                @click="deleteSearchTag(tag)"
-                >{{tag}}</v-chip>
                 </v-card>
-                <v-card class="px-3 py-3" color="yellow darken-3">
+                <v-card 
+                class="px-3 py-3 scroll-y" 
+                color="yellow darken-3"
+                style="height: 730px"
+                >
                         <v-list two-line light>
                             <v-list-tile 
                             v-for="item in onSearch"
@@ -64,7 +63,23 @@
                         </v-list-tile>
                         </template> -->
                     </v-list>    
-  
+                </v-card>
+                
+            </v-flex>
+            <v-flex class="px-3" xs3>
+                <v-card color="yellow darken-3" class="px-3">
+                    <h1 class="py-3">Tag Filter</h1>
+                    <v-divider color="white"></v-divider>
+                    <v-spacer class="pt-3"></v-spacer>
+                        <v-chip
+                        v-for="(tag, index) in states"
+                        :key='index'
+                        @click="getSearchTag(tag)"
+                        :color="getColorTag(tag)"
+                        >{{tag}}</v-chip>
+                    <v-flex class="pt-3">
+
+                    </v-flex>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -90,7 +105,23 @@ export default {
         return{
             word: '',
             clicktag: false,
-            currentTag: []
+            currentTag: [],
+            states: [
+            'Alabama', 'Alaska', 'American Samoa', 'Arizona',
+            'Arkansas', 'California', 'Colorado', 'Connecticut',
+            'Delaware', 'District of Columbia', 'Federated States of Micronesia',
+            'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
+            'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
+            'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
+            'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+            'Missouri', 'Montana', 'Nebraska', 'Nevada',
+            'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
+            'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
+            'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
+            'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
+            'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
+            'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+            ]
         }
     },
    computed: {
@@ -131,6 +162,12 @@ export default {
             }
             this.clicktag = false  
         },
+        deleteSearchTag(tag){
+            var index = this.currentTag.indexOf(tag);
+            if (index > -1) {
+                this.currentTag.splice(index, 1);
+            }    
+        },
         getSearchTag(tag){
             var exist = false
             this.clicktag = true
@@ -141,13 +178,22 @@ export default {
             }
             if(exist == false){
                 this.currentTag.push(tag)
+            }else{
+                this.deleteSearchTag(tag)
             }
         },
-        deleteSearchTag(tag){
-            var index = this.currentTag.indexOf(tag);
-            if (index > -1) {
-                this.currentTag.splice(index, 1);
-            }    
+        getColorTag(tag){
+            var exist = false
+            this.clicktag = true
+            for(var i=0; i < this.currentTag.length; i++){
+                if(this.currentTag[i] == tag){
+                    exist = true
+                    return "yellow darken-1"
+                }
+            }
+            if(exist == false){
+                return "grey darken-3"
+            }
         },
     }
   

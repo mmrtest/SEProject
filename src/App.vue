@@ -1,67 +1,36 @@
 <template>
   <v-app dark style="background-color: #FFF59D;background-image: url(https://www.goodfreephotos.com/albums/other-landscapes/shoreline-of-sand-and-ocean.jpg);background-size: cover;">
     <v-navigation-drawer v-model="drawer" fixed temporary>
-      <v-list class="pa-1">
-        <v-list-tile avatar>
-          <v-list-tile-avatar>
+      <v-toolbar flat class="transparent">
+        <v-list class="pa-0">
+          <v-list-tile avatar>
+            <v-list-tile-avatar>
               <img src="https://randomuser.me/api/portraits/men/85.jpg">
-          </v-list-tile-avatar>
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>Pinned Article</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
+
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
+
+        <v-list-tile
+          v-for="item in items"
+          :key="item.title"
+          @click="reDirect(item.id)"
+        >
+          <v-list-tile-action>
+            <v-icon>book</v-icon>
+          </v-list-tile-action>
+
           <v-list-tile-content>
-              <v-list-tile-title>John Doe</v-list-tile-title>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
-         <v-list-group
-          prepend-icon="account_circle"
-          value="true"
-        >
-          <template v-slot:activator>
-            <v-list-tile>
-              <v-list-tile-title>Users</v-list-tile-title>
-            </v-list-tile>
-          </template>
-          <v-list-group
-            no-action
-            sub-group
-            value="true"
-          >
-            <template v-slot:activator>
-              <v-list-tile>
-                <v-list-tile-title>Admin</v-list-tile-title>
-              </v-list-tile>
-            </template>
-  
-            <v-list-tile
-              v-for="(admin, i) in admins"
-              :key="i"
-            >
-              <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
-              <v-list-tile-action>
-                <v-icon v-text="admin[1]"></v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list-group>
-  
-          <v-list-group
-            sub-group
-            no-action
-          >
-            <template v-slot:activator>
-              <v-list-tile>
-                <v-list-tile-title>Actions</v-list-tile-title>
-              </v-list-tile>
-            </template>
-            <v-list-tile
-              v-for="(crud, i) in cruds"
-              :key="i"
-            >
-              <v-list-tile-title v-text="crud[0]"></v-list-tile-title>
-              <v-list-tile-action>
-                <v-icon v-text="crud[1]"></v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list-group>
-        </v-list-group>
       </v-list>
 
 
@@ -139,7 +108,7 @@
         <v-btn flat small router to="/search">
             <v-icon small dark>search</v-icon>
             Search</v-btn>
-        <v-btn flat small router to="/search">
+        <v-btn flat small @click='logout'>
             <v-icon small dark>lock</v-icon>
             Log-out</v-btn>
       </v-toolbar-items>    
@@ -185,11 +154,19 @@ export default {
     }
   },
   computed: {
-    menuItem() {
-      
+    items() {
+      var article = []
+      var obj = this.$store.getters.user.saveArticle
+      for(let key in obj){
+        article.push(this.$store.getters.loadArticle(obj[key]))
+      }
+      console.log(article)
+      console.log(obj)
+      console.log(this.$store.getters.user.key)
+      return article
     },
     userAuth (){
-      return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+      return this.$store.getters.user !== null && this.$store.getters.user.id !== undefined && this.$store.getters.user.id !== ''
     },
     comparePass (){
       return this.password !== this.conPassword ? 'Password does not Match!!' : ''
@@ -215,14 +192,24 @@ export default {
       // console.log({email: this.email,password: this.password,conPassword: this.conPassword})
       // userRef.push({email:this.email,password:this.password,name:this.name})
       this.$store.dispatch('signUserup',{email: this.email,password: this.password})
+      
     },
     onLogin() {
       // console.log({email: this.email,password: this.password,conPassword: this.conPassword})
       // userRef.push({email:this.email,password:this.password,name:this.name})
+      
       this.$store.dispatch('logUserin',{email: this.loginEmail,password: this.loginPassword})
     },
     onDismissed() {
       this.$store.dispatch('clearError')
+    },
+    logout (){
+      this.$store.dispatch('onLogout')
+      
+      this.$router.push('/')
+    },
+    reDirect(id){
+      this.$router.push('/article/' + id)
     }
   },
 }
