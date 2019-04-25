@@ -36,9 +36,10 @@
                 
                 <v-divider></v-divider>
                 <v-card-text>
-                    <div class="info--text">17-02-1997 / Dr.Johnson</div>
+                    <div class="info--text">Project owner : {{item.nameStudent1}} : {{item.idStudent1}} / {{item.nameStudent2}} : {{item.idStudent2}}</div>
+                    <div class="info--text">Advisor by {{item.teacher}}</div>
                     <div class='font-weight-light'>
-                        Takoyaki (literally 'octopus fry') - commonly called "octopus balls" in English - is a quintessential food of summer festivals in Japan. Essentially they're round balls of fluffy dough that are smothered with a special savory takoyaki sauce and have a tasty piece of octopus meat at the center. Follow along as we share how these delights are made - and discover why they're such an addictive treat!
+                        Download Link : {{item.link}}
                     </div>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -48,7 +49,7 @@
                 <v-divider></v-divider>
                 <v-card-text>
                     <div class='font-weight-light'>
-                        Articles in the English language are the definite article the and the indefinite articles a and an. Use of the definite article implies that the speaker assumes the listener knows the identity of the noun's referent (because it is obvious, because it is common knowledge, or because it was mentioned in the same sentence or an earlier sentence). Use of an indefinite article implies that the speaker assumes the listener does not have to be told the identity of the referent. In some noun phrases, no article is used.
+                       {{item.description}}
                     </div>
                 </v-card-text>
 
@@ -71,7 +72,7 @@
                         <div>
                         <span class="headline">{{item.title}}</span>
                         <div class="d-flex">
-                            <span class="grey--text">Total View : {{ item.views }}</span>
+                            <span class="grey--text">Similar Tag : {{ item.tag[0] }}</span>
                         </div>
                         </div>
                         <v-spacer></v-spacer>
