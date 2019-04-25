@@ -151,7 +151,6 @@ export default {
         return{
             dialog: false,
             Eteacher: this.article.teacher,
-            items: ['Florida','Georgia','Nebraska','California','New York'],
             Etitle: this.article.title,
             Eimage: this.article.image,
             Edescription: this.article.description,
@@ -161,21 +160,17 @@ export default {
             EnameStudent2: this.article.nameStudent2,
             EidStudent2: this.article.idStudent2,
             Elink: this.article.link,
+            items: ['Anya Apavatjrut','Arnan Sipitakiat','Chinawat Isradisaikul','Dome Potikanond','Juggapong Natwichai','Karn Patanukhom','Kasemsit Teeyapan','Kenneth Cosh'
+            ,'Lachana Ramingwong','Narathip Tiangtae','Narissara Eiamkanitchat','Navadon Khunlertgit','Paskorn Champrasert','Patiwet Wuttisarnwattana'
+            ,'Pruet Boonma','Sakgasit Ramingwong','Sanpawat Kantabutra','Sansanee Auephanwiriyakul','Santi Phithakkitnukoon',
+            'Trasapong Thaiupathump','Yuthapong Somchit'],
             states: [
-            'Alabama', 'Alaska', 'American Samoa', 'Arizona',
-            'Arkansas', 'California', 'Colorado', 'Connecticut',
-            'Delaware', 'District of Columbia', 'Federated States of Micronesia',
-            'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
-            'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-            'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
-            'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-            'Missouri', 'Montana', 'Nebraska', 'Nevada',
-            'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-            'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
-            'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
-            'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
-            'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
-            'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+            'Application','Web App','Game', 
+            'Wireless', 'Sensor','Search','Bluetooth',
+            'Block chain','Moblie App', 'Network','Hardware','Software','Platform',
+            'Network Design', 'AI', 'Math', 'Iot', 'Image processing',
+            'Machine lerning', 'Microcontroller', 'MIS','Data Scient', 'Big data',
+            'Management System ', 'Quantum Coputing'
             ]
 
         }
