@@ -39,9 +39,10 @@
       <v-btn v-if="this.userAuth" flat fab dark small @click.stop="drawer = !drawer">
         <v-icon dark>list</v-icon>
       </v-btn>
+      <img src="../src/assets/logoo.png" height="50px" width="35px">
       <v-toolbar-title>
         <router-link to='/' tag="span" style="cursor: pointer">
-        <v-icon dark>pets</v-icon>
+        
         Projectpidia
         </router-link>
       </v-toolbar-title>

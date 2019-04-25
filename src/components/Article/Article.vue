@@ -19,7 +19,7 @@
                 ></v-img>
         
                 <v-card-title>
-                    <h1 class='font-weight-regular'>{{item.title}}</h1>
+                    <h1 class='font-weight-Medium' style="color: #81D4FA;">{{item.title}}</h1>
                     <template>
                         <v-spacer></v-spacer>
                         <app-edit :article="item" v-if="userIsCreator">
@@ -38,8 +38,10 @@
                 <v-card-text>
                     <div class="info--text">Project owner : {{item.nameStudent1}} : {{item.idStudent1}} / {{item.nameStudent2}} : {{item.idStudent2}}</div>
                     <div class="info--text">Advisor by {{item.teacher}}</div>
-                    <div class='font-weight-light'>
-                        Download Link : {{item.link}}
+                    <div class='font-weight-Medium'>
+                        Download Link : 
+                        <a :href="item.link">{{' ' + item.link}}</a>
+                                          
                     </div>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -70,9 +72,9 @@
                     ></v-img>
                     <v-card-title>
                         <div>
-                        <span class="headline">{{item.title}}</span>
+                        <span class="headline" style="color: #81D4FA; display: inline-block; margin: 0;padding: 0;width: 250px;vertical-align: bottom;white-space: nowrap;overflow: hidden;">{{item.title}}</span>
                         <div class="d-flex">
-                            <span class="grey--text">Similar Tag : {{ item.tag[0] }}</span>
+                            <span class="grey--text" >Similar Tag : {{ item.tag[0] }}</span>
                         </div>
                         </div>
                         <v-spacer></v-spacer>
@@ -120,7 +122,7 @@ export default {
             if(!this.userIsAuth){
                 return false
             }else{
-                return this.$store.getters.user.id === this.item.creator
+                return this.$store.getters.user.id === this.item.creator || this.$store.getters.user.id === "CCf1CnSZwBWKwYcAEHVnEBFF9Bj1"
             }
         },
         loading(){
