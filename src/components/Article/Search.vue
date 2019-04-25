@@ -1,110 +1,205 @@
 <template>
-    <v-form>
-      <v-container>
-        <v-layout>
-        <v-flex xs6 sm5></v-flex>
-        <v-flex xs6 sm3>
-          <v-img :src="picture" height="200" width="200" >   </v-img>
-        </v-flex>
-        <v-flex xs6 sm4></v-flex>
-      </v-layout>
-    
-        <v-layout row wrap>
-        <v-flex xs6 sm2></v-flex>
-          <v-flex xs6 sm8>
-            <v-text-field
-              v-model="message"
-              outline
-              clearable
-              label="Search hear...."
-              type="text"
-            >
-              <template v-slot:prepend>
-                <v-tooltip
-                  bottom
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">mdi-help-circle-outline</v-icon>
-                  </template>
-                  I'm a tooltip
-                </v-tooltip>
-              </template>
-              <template v-slot:append>
-                <v-fade-transition leave-absolute>
-                  <v-progress-circular
-                    v-if="loading"
-                    size="24"
-                    color="info"
-                    indeterminate
-                  ></v-progress-circular>
-                 
-                </v-fade-transition>
-              </template>
-            </v-text-field>
-          </v-flex>
-        <v-flex xs6 sm2></v-flex>
-        </v-layout>
-     
-      </v-container>
-    
-    <v-container grid-list-md > 
-        <v-layout row wrap> 
-        <v-flex md2> </v-flex>
-            <v-flex md4>
-                <v-card >
-                <v-card-title>
-                    <span class="headline">Top 10 Search</span>
-                </v-card-title>  
-                <v-card-text colour="white">Whitsunday Island, Whitsunday Islands<br>popo<br>aaaaaa<br>sdfsdfsdf</v-card-text>
-                </v-card>
-            </v-flex>
 
-        <v-flex md4>
-                <v-card >
-                <v-card-title>
-                    <span class="headline">Recent Tage</span>
-                </v-card-title>  
-                <v-card-text colour="white">Island,day Islands <br>i love mem <br>papa eat mom<br>safsdfsdfsd</v-card-text>
+    <v-container>
+        <v-layout row>
+            <v-flex class="search-wrapper" xs9>
+                <v-card class="px-3 pt-3" color="yellow darken-3">
+                    <h1>Search</h1>
+                <v-text-field v-model="word" type="input" label="input your key" prepend-icon="search"></v-text-field>
+                </v-card>
+                <v-card 
+                class="px-3 py-3 scroll-y" 
+                color="yellow darken-3"
+                style="height: 730px"
+                >
+                        <v-list two-line light>
+                            <v-list-tile 
+                            v-for="item in onSearch"
+                            :key="item.id"
+                            :src="item.image"
+                             @click="onLoadArticle(item.id)"
+                             >
+                                <v-list-tile-avatar>
+                                <img :src="item.image">
+                                </v-list-tile-avatar>
+                
+                                <v-list-tile-content>
+                                <v-list-tile-title >{{item.title}}</v-list-tile-title>
+                                <v-list-tile-sub-title>Tag : 
+                                    <v-chip
+                                    v-for="(tag, index) in item.tag"
+                                    :key='index'
+                                    @click="getSearchTag(tag)"
+                                    >{{tag}}</v-chip>
+                                </v-list-tile-sub-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        <!-- <template v-for="(item, index) in items">
+                        <v-subheader
+                            v-if="item.header"
+                            :key="item.header"
+                        >
+                            {{ item.header }}
+                        </v-subheader>
+            
+                        <v-divider
+                            v-else-if="item.divider"
+                            :key="index"
+                            :inset="item.inset"
+                        ></v-divider>
+            
+                        <v-list-tile
+                            v-else
+                            :key="item.title"
+                            avatar
+                        >
+                            <v-list-tile-avatar>
+                            <img :src="item.avatar">
+                            </v-list-tile-avatar>
+            
+                            <v-list-tile-content>
+                            <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                            <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                        </template> -->
+                    </v-list>    
+                </v-card>
+                
+            </v-flex>
+            <v-flex class="px-3" xs3>
+                <v-card color="yellow darken-3" class="px-3">
+                    <h1 class="py-3">Tag Filter</h1>
+                    <v-divider color="white"></v-divider>
+                    <v-spacer class="pt-3"></v-spacer>
+                        <v-chip
+                        v-for="(tag, index) in states"
+                        :key='index'
+                        @click="getSearchTag(tag)"
+                        :color="getColorTag(tag)"
+                        >{{tag}}</v-chip>
+                    <v-flex class="pt-3">
+
+                    </v-flex>
                 </v-card>
             </v-flex>
-            <v-flex md2> </v-flex>
         </v-layout>
-        </v-container>
-   </v-form>    
+    </v-container>
+  <!-- <div class="search-wrapper">
+    <input type="text" v-model="search" placeholder="Search title.."/>
+        <label>Search title:</label>
+  </div>
+  <div class="wrapper">
+    <div class="card" v-for="post in filteredList">
+      <a v-bind:href="post.link" target="_blank">
+        <img v-bind:src="post.img"/>
+        <small>posted by: {{ post.author }}</small>
+        {{ post.title }}
+      </a>
+    </div>
+  </div> -->
 </template>
 
 <script>
-export default ({
-  data: () => ({
-    message: '',
-    loading: false,
-    picture:require('./../../assets/logo.png')
-  }),
+export default {
+    data(){
+        return{
+            word: '',
+            clicktag: false,
+            currentTag: [],
+            states: [
+            'Alabama', 'Alaska', 'American Samoa', 'Arizona',
+            'Arkansas', 'California', 'Colorado', 'Connecticut',
+            'Delaware', 'District of Columbia', 'Federated States of Micronesia',
+            'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
+            'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
+            'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
+            'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+            'Missouri', 'Montana', 'Nebraska', 'Nevada',
+            'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
+            'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
+            'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
+            'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
+            'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
+            'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+            ]
+        }
+    },
+   computed: {
+        items () {
+            return this.$store.getters.loadArticles
+        },
+        loading(){
+            return this.$store.getters.loading
+        },
+        onSearchTag() {
+            if(this.currentTag.length == 0){
+                return this.$store.getters.loadArticles
+            }
+            return this.items.filter(item => {
+                var check = 0
+                for(var j=0; j < this.currentTag.length; j++){    
+                    for(var tag in item.tag){
+                         if(item.tag[tag] == this.currentTag[j]){
+                            check++
+                         }
+                     }
+                }
+                return (check == this.currentTag.length) ? true : false
+            })
+        },
+        onSearch() {
+            return this.onSearchTag.filter(item => {
+                return item.title.toLowerCase().includes(this.word.toLowerCase())
+            })
+        },
+        
 
-  methods: {
-    clickMe () {
-      this.loading = true
-      this.message = 'Wait for it...'
-      setTimeout(() => {
-        this.loading = false
-        this.message = 'You\'ve clicked me!'
-      }, 2000)
+    },
+    methods: {
+        onLoadArticle(id){
+            if(this.clicktag == false){
+                this.$router.push('/article/' + id)
+            }
+            this.clicktag = false  
+        },
+        deleteSearchTag(tag){
+            var index = this.currentTag.indexOf(tag);
+            if (index > -1) {
+                this.currentTag.splice(index, 1);
+            }    
+        },
+        getSearchTag(tag){
+            var exist = false
+            this.clicktag = true
+            for(var i=0; i < this.currentTag.length; i++){
+                if(this.currentTag[i] == tag){
+                    exist = true
+                }
+            }
+            if(exist == false){
+                this.currentTag.push(tag)
+            }else{
+                this.deleteSearchTag(tag)
+            }
+        },
+        getColorTag(tag){
+            var exist = false
+            this.clicktag = true
+            for(var i=0; i < this.currentTag.length; i++){
+                if(this.currentTag[i] == tag){
+                    exist = true
+                    return "yellow darken-1"
+                }
+            }
+            if(exist == false){
+                return "grey darken-3"
+            }
+        },
     }
-  }
-})
+  
+}
+
+
 </script>
-
-<style>
-.bottom-gradient {
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 72px);
-}
-
-.repeating-gradient {
-  background-image: repeating-linear-gradient(-45deg,
-                      rgba(255,0,0,.25),
-                      rgba(255,0,0,.25) 5px,
-                      rgba(0,0,255,.25) 5px,
-                      rgba(0,0,255,.25) 10px
-                    );
-}
-</style>
+>>>>>>> c3995e08991546af319408f9e370ba43055940af

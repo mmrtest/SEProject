@@ -5,6 +5,7 @@ import Register from '@/components/User/Register'
 import Signin from '@/components/User/Signin'
 import Article from '@/components/Article/Article'
 import Search from '@/components/Article/Search'
+import CreateArticle from '@/components/Article/CreateArticle'
 
 Vue.use(Router)
 
@@ -16,8 +17,9 @@ export default new Router({
         component: Home
     },
     {
-        path: '/article',
+        path: '/article/:id',
         name: 'Article',
+        props: true,
         component: Article
     },
     {
@@ -34,6 +36,11 @@ export default new Router({
         path: '/search',
         name: 'search',
         component: Search
+    },
+    {
+        path: '/create',
+        name: 'create',
+        component: CreateArticle
     }
     ]
 })
