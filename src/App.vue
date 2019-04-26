@@ -164,6 +164,7 @@ export default {
       console.log(article)
       console.log(obj)
       console.log(this.$store.getters.user.key)
+      console.log(article)
       return article
     },
     userAuth (){
