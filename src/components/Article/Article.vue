@@ -17,7 +17,6 @@
                     :src='item.image'
                     aspect-ratio="2.75"
                 ></v-img>
-        
                 <v-card-title>
                     <h1 class='font-weight-Medium' style="color: #81D4FA;">{{item.title}}</h1>
                     <template>
@@ -74,7 +73,7 @@
                         <div>
                         <span class="headline" style="color: #81D4FA; display: inline-block; margin: 0;padding: 0;width: 250px;vertical-align: bottom;white-space: nowrap;overflow: hidden;">{{item.title}}</span>
                         <div class="d-flex">
-                            <span class="grey--text" >Similar Tag : {{ item.tag[0] }}</span>
+                            <span class="grey--text" >Similar Tag : {{ simitag[index] }}</span>
                         </div>
                         </div>
                         <v-spacer></v-spacer>
@@ -99,6 +98,7 @@ export default {
   data () {
     return {
       topic: [],
+      simitag: [],
       toggle: true
     }
   },
@@ -109,20 +109,27 @@ export default {
         this.topic[1] = this.$store.getters.getrandArticle(temp)
         temp = (Math.floor(Math.random() * (10 - 1 + 1)) + 1) % this.$store.getters.loadArticlesLength
         this.topic[2] = this.$store.getters.getrandArticle(temp)
+        this.simitag[0] = this.item.tag[Math.floor(Math.random()*this.item.tag.length)];
+        this.simitag[1] = this.item.tag[Math.floor(Math.random()*this.item.tag.length)];
+        this.simitag[2] = this.item.tag[Math.floor(Math.random()*this.item.tag.length)];
  },
   props: ['id'],
   computed: {
         item () {
             return this.$store.getters.loadArticle(this.id)
         },
+        
         userIsAuth(){
             return this.$store.getters.user !== null && this.$store.getters.user !== undefined && this.$store.getters.user.id !== ''
         },
         userIsCreator(){
             if(!this.userIsAuth){
                 return false
-            }else{
-                return this.$store.getters.user.id === this.item.creator || this.$store.getters.user.id === "CCf1CnSZwBWKwYcAEHVnEBFF9Bj1"
+            }else if(this.$store.getters.user.id === "CCf1CnSZwBWKwYcAEHVnEBFF9Bj1"){
+                return true
+            }
+            else{
+                return this.$store.getters.user.id === this.item.creator
             }
         },
         loading(){

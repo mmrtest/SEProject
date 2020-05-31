@@ -29,7 +29,13 @@
                 <p class='subheading font-weight-light' style="font">Explore some amazing article!!</p>
                 
             </v-flex>
+            <div class="px-4">
+            <v-card dark class="card2">
+                <center><img src="../assets/logooo.png" height="300px"></center>
             </v-card>
+            </div>
+            </v-card>
+            
         </v-layout>
     </v-container>
 </template>
@@ -70,6 +76,12 @@ export default {
         
         font-size: 2rem;
         background-color: #039BE5;
+        
+    }
+    .card2 {
+        font-size: 2rem;
+        height: 300px;
+        background-color: white;
         
     }
     .load1 {

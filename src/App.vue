@@ -11,7 +11,7 @@
             <v-list-tile-content>
               <v-list-tile-title>Pinned Article</v-list-tile-title>
             </v-list-tile-content>
-          </v-list-tile>
+          </v-list-tile> 
         </v-list>
       </v-toolbar>
 
@@ -123,7 +123,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-database.js"></script>
-
+<script src="/__/firebase/6.1.1/firebase-auth.js"></script>
 
 <script>
 import HelloWorld from './components/HelloWorld'
